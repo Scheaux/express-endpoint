@@ -19,7 +19,7 @@ app.get('/notes', (req, res) => {
 });
 
 app.delete('/notes/:id', (req, res) => {
-  notes = notes.filter(x => x.id !== id);
+  notes = notes.filter(x => x.id !== req.params.id);
   res.sendStatus(204);
 });
 
