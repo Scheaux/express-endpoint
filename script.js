@@ -18,9 +18,14 @@ app.get('/notes', (req, res) => {
   res.send(notes);
 });
 
+app.post('/notes', (req, res) => {
+  notes.push(req.body);
+  res.send(notes);
+});
+
 app.delete('/notes/:id', (req, res) => {
   notes = notes.filter(x => x.id !== req.params.id);
-  res.sendStatus(204);
+  res.send(notes);
 });
 
 app.listen(port);
