@@ -1,4 +1,9 @@
 {
+  "name": "helpdesk-be",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node script.js"
+  },
   "dependencies": {
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
