@@ -11,11 +11,11 @@ const port = process.env.PORT || 7070;
 let posts = [];
 let nextId = 1;
 
-app.get('/posts', async (ctx, next) => {
+app.get('/posts', (ctx, next) => {
   ctx.response.body = posts;
 });
 
-app.post('/posts', async (ctx, next) => {
+app.post('/posts', (ctx, next) => {
   const { id, content } = ctx.request.body;
 
   if (id !== 0) {
@@ -28,7 +28,7 @@ app.post('/posts', async (ctx, next) => {
   ctx.response.status = 204;
 });
 
-app.delete('/posts/:id', async (ctx, next) => {
+app.delete('/posts/:id', (ctx, next) => {
   const postId = Number(ctx.params.id);
   const index = posts.findIndex(o => o.id === postId);
   if (index !== -1) {
