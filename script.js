@@ -2,30 +2,39 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { v4 } = require('uuid');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
 const port = process.env.PORT || 7070;
 
-let notes = [
-  { content: 'note1', id: v4() },
-  { content: 'note2', id: v4() }
-];
+let posts = [];
+let nextId = 1;
 
-app.get('/notes', (req, res) => {
-  res.send(notes);
+app.get('/posts', async (ctx, next) => {
+  ctx.response.body = posts;
 });
 
-app.post('/notes', (req, res) => {
-  notes.push(req.body);
-  res.send(notes);
+app.post('/posts', async (ctx, next) => {
+  const { id, content } = ctx.request.body;
+
+  if (id !== 0) {
+    posts = posts.map(o => o.id !== id ? o : { ...o, content: content });
+    ctx.response.status = 204;
+    return;
+  }
+
+  posts.push({ ...ctx.request.body, id: nextId++, created: Date.now() });
+  ctx.response.status = 204;
 });
 
-app.delete('/notes/:id', (req, res) => {
-  notes = notes.filter(x => x.id !== req.params.id);
-  res.send(notes);
+app.delete('/posts/:id', async (ctx, next) => {
+  const postId = Number(ctx.params.id);
+  const index = posts.findIndex(o => o.id === postId);
+  if (index !== -1) {
+    posts.splice(index, 1);
+  }
+  ctx.response.status = 204;
 });
 
 app.listen(port);
