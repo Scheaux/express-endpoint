@@ -17,15 +17,14 @@ app.get('/posts', (req, res) => {
 
 app.post('/posts', (req, res) => {
   const { id } = req.body;
-
-  if (id === '0') {
-    posts.push({ ...req.body, id: nextId, created: Date.now() });
+  if (id === 0 || id === '0') {
+    posts.push({ content: req.body.content, id: nextId, created: Date.now() });
     res.sendStatus(204);
     nextId++;
     return;
   }
 
-  posts = [...posts, req.body];
+  posts = posts.map((o) => o.id !== +id ? o : { ...o, content: req.body.content });
   res.sendStatus(204);
 });
 
